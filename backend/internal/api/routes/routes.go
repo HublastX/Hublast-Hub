@@ -1,15 +1,34 @@
 package routes
 
 import (
+	"time"
+
 	"github.com/HublastX/HubLast-Hub/internal/api/controllers"
 	"github.com/HublastX/HubLast-Hub/internal/api/middleware"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "github.com/HublastX/HubLast-Hub/docs"
 )
 
 func SetupRoutes(router *gin.Engine) {
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
 	projectController := controllers.NewProjectController()
 	roadmapController := controllers.NewRoadmapController()
 	userController := controllers.NewUserController()
+
+	url := ginSwagger.URL("/swagger/doc.json")
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	// Public routes
 	api := router.Group("/api")
@@ -32,7 +51,7 @@ func SetupRoutes(router *gin.Engine) {
 			protected.POST("/users/change-password", userController.ChangePassword)
 
 			// Admin-only user routes
-			adminUser := protected.Group("/admin/users")
+			adminUser := protected.Group("/admin/")
 			adminUser.Use(middleware.AdminMiddleware())
 			{
 				adminUser.DELETE("/users/:id", userController.DeleteUser)
@@ -48,7 +67,7 @@ func SetupRoutes(router *gin.Engine) {
 			protected.GET("/projects/:id/users", projectController.GetProjectUsers)
 
 			// Admin-only project routes
-			adminProject := protected.Group("/admin/projects")
+			adminProject := protected.Group("/admin/")
 			adminProject.Use(middleware.AdminMiddleware())
 			{
 				adminProject.PUT("/projects/:id", projectController.UpdateProject)
@@ -65,7 +84,7 @@ func SetupRoutes(router *gin.Engine) {
 			protected.GET("/roadmaps/:id", roadmapController.GetRoadmap)
 
 			// Admin-only roadmap routes
-			adminRoadmap := protected.Group("/admin/roadmaps")
+			adminRoadmap := protected.Group("/admin/")
 			adminRoadmap.Use(middleware.AdminMiddleware())
 			{
 				adminRoadmap.POST("/roadmaps", roadmapController.CreateRoadmap)

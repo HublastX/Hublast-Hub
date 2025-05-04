@@ -20,15 +20,33 @@ func NewProjectController() *ProjectController {
 	}
 }
 
+// Add these struct definitions after CreateProjectRequest
+type UserIDRequest struct {
+	UserID uint `json:"user_id" binding:"required"`
+}
+
 type CreateProjectRequest struct {
 	Title         string    `json:"title" binding:"required"`
 	Description   string    `json:"description" binding:"required"`
 	FrontendTech  string    `json:"frontend_tech" binding:"required"`
 	BackendTech   string    `json:"backend_tech" binding:"required"`
-	EstimatedTime int       `json:"estimated_time" binding:"required"` // In days
+	EstimatedTime int       `json:"estimated_time" binding:"required"`
 	DeliveryDate  time.Time `json:"delivery_date" binding:"required"`
 }
 
+// CreateProject godoc
+// @Summary Create a new project
+// @Description Creates a new project with the provided details
+// @Tags projects
+// @Accept json
+// @Produce json
+// @Param project body CreateProjectRequest true "Project details"
+// @Success 201 {object} map[string]interface{} "Returns message and created project"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 401 {object} map[string]string "Unauthorized"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Security ApiKeyAuth
+// @Router /api/projects [post]
 func (c *ProjectController) CreateProject(ctx *gin.Context) {
 	var req CreateProjectRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -71,6 +89,18 @@ func (c *ProjectController) CreateProject(ctx *gin.Context) {
 	})
 }
 
+// GetProject godoc
+// @Summary Get a specific project
+// @Description Retrieves a project by its ID
+// @Tags projects
+// @Accept json
+// @Produce json
+// @Param id path int true "Project ID"
+// @Success 200 {object} map[string]interface{} "Returns project details"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 404 {object} map[string]string "Project not found"
+// @Security ApiKeyAuth
+// @Router /api/projects/{id} [get]
 func (c *ProjectController) GetProject(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
@@ -87,6 +117,17 @@ func (c *ProjectController) GetProject(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"project": project})
 }
 
+// GetAllProjects godoc
+// @Summary Get all projects
+// @Description Retrieves all projects, optionally filtered by status
+// @Tags projects
+// @Accept json
+// @Produce json
+// @Param status query string false "Filter projects by status"
+// @Success 200 {object} map[string]interface{} "Returns list of projects"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Security ApiKeyAuth
+// @Router /api/projects [get]
 func (c *ProjectController) GetAllProjects(ctx *gin.Context) {
 	status := ctx.Query("status")
 
@@ -107,6 +148,21 @@ func (c *ProjectController) GetAllProjects(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"projects": projects})
 }
 
+// UpdateProject godoc
+// @Summary Update a project
+// @Description Updates an existing project with the provided details
+// @Tags projects
+// @Accept json
+// @Produce json
+// @Param id path int true "Project ID"
+// @Param project body CreateProjectRequest true "Updated project details"
+// @Success 200 {object} map[string]interface{} "Returns message and updated project"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 403 {object} map[string]string "Forbidden - admin only"
+// @Failure 404 {object} map[string]string "Project not found"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Security ApiKeyAuth
+// @Router /api/admin/projects/{id} [put]
 func (c *ProjectController) UpdateProject(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
@@ -145,6 +201,19 @@ func (c *ProjectController) UpdateProject(ctx *gin.Context) {
 	})
 }
 
+// DeleteProject godoc
+// @Summary Delete a project
+// @Description Deletes a project by its ID (admin only)
+// @Tags projects
+// @Accept json
+// @Produce json
+// @Param id path int true "Project ID"
+// @Success 200 {object} map[string]string "Project deleted successfully"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 403 {object} map[string]string "Forbidden - admin only"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Security ApiKeyAuth
+// @Router /api/admin/projects/{id} [delete]
 func (c *ProjectController) DeleteProject(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
@@ -167,6 +236,19 @@ func (c *ProjectController) DeleteProject(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "Project deleted successfully"})
 }
 
+// ApproveProject godoc
+// @Summary Approve a project
+// @Description Approves a pending project (admin only)
+// @Tags projects
+// @Accept json
+// @Produce json
+// @Param id path int true "Project ID"
+// @Success 200 {object} map[string]string "Project approved successfully"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 403 {object} map[string]string "Forbidden - admin only"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Security ApiKeyAuth
+// @Router /api/admin/projects/{id}/approve [post]
 func (c *ProjectController) ApproveProject(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
@@ -189,6 +271,19 @@ func (c *ProjectController) ApproveProject(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "Project approved successfully"})
 }
 
+// RejectProject godoc
+// @Summary Reject a project
+// @Description Rejects a pending project (admin only)
+// @Tags projects
+// @Accept json
+// @Produce json
+// @Param id path int true "Project ID"
+// @Success 200 {object} map[string]string "Project rejected successfully"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 403 {object} map[string]string "Forbidden - admin only"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Security ApiKeyAuth
+// @Router /api/admin/projects/{id}/reject [post]
 func (c *ProjectController) RejectProject(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
@@ -211,6 +306,20 @@ func (c *ProjectController) RejectProject(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "Project rejected successfully"})
 }
 
+// AddUserToProject godoc
+// @Summary Add user to project
+// @Description Adds a user to a specific project (admin only)
+// @Tags projects
+// @Accept json
+// @Produce json
+// @Param id path int true "Project ID"
+// @Param user body UserIDRequest true "User ID to add"
+// @Success 200 {object} map[string]string "User added to project successfully"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 403 {object} map[string]string "Forbidden - admin only"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Security ApiKeyAuth
+// @Router /api/admin/projects/{id}/users [post]
 func (c *ProjectController) AddUserToProject(ctx *gin.Context) {
 	projectID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
@@ -241,6 +350,20 @@ func (c *ProjectController) AddUserToProject(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "User added to project successfully"})
 }
 
+// RemoveUserFromProject godoc
+// @Summary Remove user from project
+// @Description Removes a user from a specific project (admin only)
+// @Tags projects
+// @Accept json
+// @Produce json
+// @Param id path int true "Project ID"
+// @Param user body UserIDRequest true "User ID to remove"
+// @Success 200 {object} map[string]string "User removed from project successfully"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 403 {object} map[string]string "Forbidden - admin only"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Security ApiKeyAuth
+// @Router /api/admin/projects/{id}/users [delete]
 func (c *ProjectController) RemoveUserFromProject(ctx *gin.Context) {
 	projectID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
@@ -271,6 +394,18 @@ func (c *ProjectController) RemoveUserFromProject(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "User removed from project successfully"})
 }
 
+// GetProjectUsers godoc
+// @Summary Get users in a project
+// @Description Retrieves all users associated with a specific project
+// @Tags projects
+// @Accept json
+// @Produce json
+// @Param id path int true "Project ID"
+// @Success 200 {object} map[string]interface{} "Returns project details with users"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 404 {object} map[string]string "Project not found"
+// @Security ApiKeyAuth
+// @Router /api/projects/{id}/users [get]
 func (c *ProjectController) GetProjectUsers(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
@@ -305,6 +440,20 @@ func (c *ProjectController) GetProjectUsers(ctx *gin.Context) {
 	})
 }
 
+// SetProjectResponsible godoc
+// @Summary Set project responsible
+// @Description Sets a user as responsible for a project (admin only)
+// @Tags projects
+// @Accept json
+// @Produce json
+// @Param id path int true "Project ID"
+// @Param user body UserIDRequest true "User ID to set as responsible"
+// @Success 200 {object} map[string]string "Project responsible set successfully"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 403 {object} map[string]string "Forbidden - admin only"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Security ApiKeyAuth
+// @Router /api/admin/projects/{id}/responsible [post]
 func (c *ProjectController) SetProjectResponsible(ctx *gin.Context) {
 	projectID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
@@ -335,6 +484,19 @@ func (c *ProjectController) SetProjectResponsible(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "Project responsible set successfully"})
 }
 
+// RequestJoinProject godoc
+// @Summary Request to join a project
+// @Description Allows the current user to request joining a specific project
+// @Tags projects
+// @Accept json
+// @Produce json
+// @Param id path int true "Project ID"
+// @Success 200 {object} map[string]string "Join request successful"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 401 {object} map[string]string "Unauthorized"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Security ApiKeyAuth
+// @Router /api/projects/{id}/join [post]
 func (c *ProjectController) RequestJoinProject(ctx *gin.Context) {
 	projectID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
@@ -359,6 +521,17 @@ func (c *ProjectController) RequestJoinProject(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "Join request submitted successfully"})
 }
 
+// GetUserProjects godoc
+// @Summary Get current user's projects
+// @Description Retrieves all projects associated with the authenticated user
+// @Tags projects
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]interface{} "Returns list of user's projects"
+// @Failure 401 {object} map[string]string "Unauthorized"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Security ApiKeyAuth
+// @Router /api/user/projects [get]
 func (c *ProjectController) GetUserProjects(ctx *gin.Context) {
 	userID, exists := ctx.Get("userID")
 	if !exists {

@@ -20,23 +20,20 @@ func NewProjectService() *ProjectService {
 }
 
 func (s *ProjectService) CreateProject(project *models.Project, creatorID uint, isAdmin bool) error {
-	// If creator is not admin, set status to pending
+
 	if !isAdmin {
 		project.Status = models.Pending
 	} else {
 		project.Status = models.Approved
 	}
 
-	// Set responsible user
 	project.ResponsibleUserID = creatorID
 
-	// Create project
 	err := s.projectRepo.Create(project)
 	if err != nil {
 		return err
 	}
 
-	// Add creator to project users
 	return s.projectRepo.AddUserToProject(project.ID, creatorID)
 }
 
@@ -81,13 +78,12 @@ func (s *ProjectService) RejectProject(projectID uint) error {
 }
 
 func (s *ProjectService) AddUserToProject(projectID, userID uint) error {
-	// Check if project exists
+
 	_, err := s.projectRepo.FindByID(projectID)
 	if err != nil {
 		return errors.New("project not found")
 	}
 
-	// Check if user exists
 	_, err = s.userRepo.FindByID(userID)
 	if err != nil {
 		return errors.New("user not found")

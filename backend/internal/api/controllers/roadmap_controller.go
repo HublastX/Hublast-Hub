@@ -27,6 +27,19 @@ type CreateRoadmapRequest struct {
 	CourseLinks string                 `json:"course_links"`
 }
 
+// CreateRoadmap godoc
+// @Summary Create a new roadmap
+// @Description Create a new learning roadmap (admin only)
+// @Tags roadmaps
+// @Accept json
+// @Produce json
+// @Param roadmap body CreateRoadmapRequest true "Roadmap information"
+// @Success 201 {object} map[string]interface{} "Roadmap created successfully"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 403 {object} map[string]string "Forbidden - Admin only"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Security BearerAuth
+// @Router /admin/roadmaps [post]
 func (c *RoadmapController) CreateRoadmap(ctx *gin.Context) {
 	var req CreateRoadmapRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -60,6 +73,18 @@ func (c *RoadmapController) CreateRoadmap(ctx *gin.Context) {
 	})
 }
 
+// GetRoadmap godoc
+// @Summary Get roadmap by ID
+// @Description Get detailed information about a specific roadmap
+// @Tags roadmaps
+// @Accept json
+// @Produce json
+// @Param id path int true "Roadmap ID"
+// @Success 200 {object} map[string]interface{} "Roadmap details"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 404 {object} map[string]string "Roadmap not found"
+// @Security BearerAuth
+// @Router /roadmaps/{id} [get]
 func (c *RoadmapController) GetRoadmap(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
@@ -76,6 +101,17 @@ func (c *RoadmapController) GetRoadmap(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"roadmap": roadmap})
 }
 
+// GetAllRoadmaps godoc
+// @Summary Get all roadmaps
+// @Description Get a list of all roadmaps, optionally filtered by area
+// @Tags roadmaps
+// @Accept json
+// @Produce json
+// @Param area query string false "Filter by roadmap area"
+// @Success 200 {object} map[string]interface{} "List of roadmaps"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Security BearerAuth
+// @Router /roadmaps [get]
 func (c *RoadmapController) GetAllRoadmaps(ctx *gin.Context) {
 	area := ctx.Query("area")
 
@@ -96,6 +132,21 @@ func (c *RoadmapController) GetAllRoadmaps(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"roadmaps": roadmaps})
 }
 
+// UpdateRoadmap godoc
+// @Summary Update roadmap information
+// @Description Update an existing roadmap (admin only)
+// @Tags roadmaps
+// @Accept json
+// @Produce json
+// @Param id path int true "Roadmap ID"
+// @Param roadmap body CreateRoadmapRequest true "Updated roadmap information"
+// @Success 200 {object} map[string]interface{} "Roadmap updated successfully"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 403 {object} map[string]string "Forbidden - Admin only"
+// @Failure 404 {object} map[string]string "Roadmap not found"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Security BearerAuth
+// @Router /admin/roadmaps/{id} [put]
 func (c *RoadmapController) UpdateRoadmap(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
@@ -139,6 +190,19 @@ func (c *RoadmapController) UpdateRoadmap(ctx *gin.Context) {
 	})
 }
 
+// DeleteRoadmap godoc
+// @Summary Delete roadmap
+// @Description Delete an existing roadmap (admin only)
+// @Tags roadmaps
+// @Accept json
+// @Produce json
+// @Param id path int true "Roadmap ID"
+// @Success 200 {object} map[string]string "Roadmap deleted successfully"
+// @Failure 400 {object} map[string]string "Bad request"
+// @Failure 403 {object} map[string]string "Forbidden - Admin only"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Security BearerAuth
+// @Router /admin/roadmaps/{id} [delete]
 func (c *RoadmapController) DeleteRoadmap(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
@@ -160,15 +224,3 @@ func (c *RoadmapController) DeleteRoadmap(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"message": "Roadmap deleted successfully"})
 }
-
-// Empty method to match existing model
-func (c *RoadmapController) CreateTask(ctx *gin.Context) {}
-
-// Empty method to match existing model
-func (c *RoadmapController) GetTask(ctx *gin.Context) {}
-
-// Empty method to match existing model
-func (c *RoadmapController) UpdateTask(ctx *gin.Context) {}
-
-// Empty method to match existing model
-func (c *RoadmapController) DeleteTask(ctx *gin.Context) {}
