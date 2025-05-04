@@ -17,4 +17,6 @@ COPY --from=builder /app/main .
 
 COPY .env .
 
+EXPOSE 3005
+
 CMD ["./main"]

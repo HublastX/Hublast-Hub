@@ -17,7 +17,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - "30050:3005"
+      - "3005:3005"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
