@@ -13,8 +13,8 @@ export default function Landing() {
 
             <main className="flex flex-col items-center min-h-screen scroll-smooth">
                 <Header />
-                <section id="start" className="w-full h-screen flex flex-col justify-center items-center text-center px-4 bg-gradient-to-b from-transparent to-neutral-50 dark:to-gray-950 scroll-smooth">
-                    <p className="uppercase tracking-widest text-sm md:text-base text-gray-400 mb-4">
+                <section id="start" className="w-full h-screen flex flex-col justify-center items-center text-center md:px-4 px-5 bg-gradient-to-b from-transparent to-neutral-50 dark:to-gray-950 scroll-smooth">
+                    <p className="uppercase tracking-widest text-sm md:text-base dark:text-gray-400 text-gray-500 mb-4">
                         a comunidade que acredita no seu potencial
                     </p>
 
@@ -22,10 +22,10 @@ export default function Landing() {
                         Sua <span className="text-purple-500">jornada dev</span>{" "}
                         <br />
                         começa com{" "}
-                        <span className="text-purple-400">apoio e prática</span>
+                        <span className="text-purple-600">apoio e prática</span>
                     </h1>
 
-                    <p className="text-md md:text-lg text-gray-300 mb-8 max-w-xl">
+                    <p className="text-md md:text-lg dark:text-gray-300 text-gray-400 mb-8 max-w-xl">
                         Aprenda, colabore e ganhe experiência com projetos
                         reais.
                     </p>
