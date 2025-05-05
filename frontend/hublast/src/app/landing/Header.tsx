@@ -37,7 +37,7 @@ export default function Header() {
     };
 
     return (
-        <header className="fixed z-50 w-full py-4 px-6 flex justify-between items-center bg-white/70 dark:bg-gray-950/70 backdrop-blur-md border-b border-white/10 dark:border-gray-800/20">
+        <header className="fixed z-50 w-full py-4 px-6 flex justify-between items-center bg-white/70 dark:bg-gray-900/70 backdrop-blur-md border-b border-white/10 dark:border-none">
             <div className="flex items-center">
                 <Logo className="h-12 text-purple-500" />
                 <h1 className="text-2xl rounded px-3 py-2 font-extrabold">
