@@ -1,6 +1,13 @@
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaUsers, FaProjectDiagram, FaLightbulb } from "react-icons/fa";
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function About() {
+    const cardsRef = useRef<HTMLDivElement[]>([]);
+
     const cards = [
         {
             icon: <FaUsers size={32} className="text-purple-600" />,
@@ -22,8 +29,26 @@ export default function About() {
         },
     ];
 
+    useEffect(() => {
+        gsap.fromTo(
+            cardsRef.current,
+            { opacity: 0, y: 50 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: "power3.out",
+                stagger: 0.2,
+                scrollTrigger: {
+                    trigger: "#about",
+                    start: "top 80%",
+                },
+            }
+        );
+    }, []);
+
     return (
-        <section id="about" className="w-full min-h-screen px-6 py-20 dark:bg-gray-950 bg-neutral-50 text-center flex flex-col items-center scroll-smooth">
+        <section id="about" className="w-full min-h-screen z-0 px-6 py-20 dark:bg-gray-950 bg-neutral-50 text-center flex flex-col items-center scroll-smooth">
             <h2 className="text-3xl md:text-4xl font-semibold mb-12 text-gray-900 dark:text-white">
                 Sobre a <span className="text-purple-600">Hublast</span>
             </h2>
@@ -32,7 +57,10 @@ export default function About() {
                 {cards.map((card, index) => (
                     <div
                         key={index}
-                        className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                        ref={(el) => {
+                            if (el) cardsRef.current[index] = el;
+                          }}
+                                                  className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow  duration-300 opacity-0"
                     >
                         <div className="mb-6 flex justify-center items-center">
                             {card.icon}
