@@ -3,14 +3,16 @@ package routes
 import (
 	"time"
 
-	"github.com/HublastX/HubLast-Hub/internal/api/controllers"
-	"github.com/HublastX/HubLast-Hub/internal/api/middleware"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
 	_ "github.com/HublastX/HubLast-Hub/docs"
+	projectcontrollers "github.com/HublastX/HubLast-Hub/internal/api/controllers/project_controller"
+	roadmapcontrollers "github.com/HublastX/HubLast-Hub/internal/api/controllers/roadmap_controller"
+	usercontrollers "github.com/HublastX/HubLast-Hub/internal/api/controllers/user_controller"
+	"github.com/HublastX/HubLast-Hub/internal/api/middleware"
 )
 
 func SetupRoutes(router *gin.Engine) {
@@ -23,9 +25,9 @@ func SetupRoutes(router *gin.Engine) {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	projectController := controllers.NewProjectController()
-	roadmapController := controllers.NewRoadmapController()
-	userController := controllers.NewUserController()
+	projectController := projectcontrollers.NewProjectController()
+	roadmapController := roadmapcontrollers.NewRoadmapController()
+	userController := usercontrollers.NewUserController()
 
 	url := ginSwagger.URL("/swagger/doc.json")
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
