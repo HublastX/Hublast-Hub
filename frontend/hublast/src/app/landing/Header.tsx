@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Logo from "../assets/Logo";
+import Logo from "../../assets/Logo";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
