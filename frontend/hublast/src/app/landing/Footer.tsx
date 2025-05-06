@@ -19,7 +19,7 @@ export default function Footer() {
                     <FaGithub />
                 </a>
                 <a
-                    href="https://linkedin.com"
+                    href="https://www.linkedin.com/company/hublast/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-purple-600 hover:text-purple-800 transition-colors text-xl"
@@ -27,14 +27,15 @@ export default function Footer() {
                     <FaLinkedin />
                 </a>
                 <a
-                    href="mailto:contato@hublast.dev"
+                    href="mailto:hublastx@gmail.com"
                     className="text-purple-600 hover:text-purple-800 transition-colors text-xl"
                 >
                     <FaEnvelope />
                 </a>
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-500">
-                © {new Date().getFullYear()} Hublast. Todos os direitos reservados.
+                © {new Date().getFullYear()} Hublast. Todos os direitos
+                reservados.
             </p>
         </footer>
     );
