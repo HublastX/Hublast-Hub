@@ -1,5 +1,4 @@
 "use client";
-import Head from "next/head";
 import Header from "./landing/Header";
 import About from "./landing/about";
 import { FaDiscord } from "react-icons/fa";
@@ -41,10 +40,6 @@ export default function Landing() {
 
     return (
         <>
-            <Head>
-                <title>Hublast | Comunidade Dev</title>
-            </Head>
-
             <main className="flex flex-col items-center min-h-screen scroll-smooth">
                 <Header />
                 <section
