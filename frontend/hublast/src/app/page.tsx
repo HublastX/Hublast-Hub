@@ -58,10 +58,10 @@ export default function Landing() {
                         ref={titleRef}
                         className=" opacity-0 text-4xl md:text-6xl font-extrabold leading-tight mb-4"
                     >
-                        Sua <span className="text-purple-500">jornada dev</span>{" "}
+                        Sua <span className="text-violet-500">jornada dev</span>{" "}
                         <br />
                         começa com{" "}
-                        <span className="text-purple-500">apoio e prática</span>
+                        <span className="text-violet-500">apoio e prática</span>
                     </h1>
 
                     <p
@@ -77,7 +77,7 @@ export default function Landing() {
                         href="https://discord.gg/uXPXZdkqkf"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="opacity-0 z-0 inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200"
+                        className="opacity-0 z-0 inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200"
                     >
                         <FaDiscord size={20} />
                         Entrar na Comunidade

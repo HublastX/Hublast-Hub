@@ -10,19 +10,19 @@ export default function About() {
 
     const cards = [
         {
-            icon: <FaUsers size={32} className="text-purple-600" />,
+            icon: <FaUsers size={32} className="text-violet-600" />,
             title: "Comunidade ativa",
             description:
                 "Conecte-se com devs iniciantes e experientes, troque ideias e evolua em grupo.",
         },
         {
-            icon: <FaProjectDiagram size={32} className="text-purple-600" />,
+            icon: <FaProjectDiagram size={32} className="text-violet-600" />,
             title: "Projetos reais",
             description:
                 "Participe de squads com foco em prática e ganhe experiência colaborando em projetos.",
         },
         {
-            icon: <FaLightbulb size={32} className="text-purple-600" />,
+            icon: <FaLightbulb size={32} className="text-violet-600" />,
             title: "Mentoria e crescimento",
             description:
                 "Receba orientações, tire dúvidas e estruture sua carreira com apoio da comunidade.",
@@ -50,7 +50,7 @@ export default function About() {
     return (
         <section id="about" className="w-full z-0 px-6 py-20 dark:bg-gray-950 bg-neutral-50 text-center flex flex-col items-center scroll-smooth ">
             <h2 className="text-3xl md:text-4xl font-semibold mb-12 text-gray-900 dark:text-white">
-                Sobre a <span className="text-purple-600">Hublast</span>
+                Sobre a <span className="text-violet-600">Hublast</span>
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl w-full">
@@ -65,7 +65,7 @@ export default function About() {
                         <div className="mb-6 flex justify-center items-center">
                             {card.icon}
                         </div>
-                        <h3 className="text-xl font-semibold mb-4 text-purple-500">
+                        <h3 className="text-xl font-semibold mb-4 text-violet-500">
                             {card.title}
                         </h3>
                         <p className="dark:text-gray-300 text-gray-600 text-sm">
