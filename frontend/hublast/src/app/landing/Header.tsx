@@ -47,14 +47,14 @@ export default function Header() {
     return (
         <header className="fixed z-50 w-full py-4 px-6 flex justify-between items-center bg-white/70 dark:bg-gray-900/70 backdrop-blur-md border-b border-white/10 dark:border-none">
             <div className="flex items-center">
-                <Logo className="h-12 text-purple-500" />
+                <Logo className="h-12 text-violet-500" />
                 <h1 className="text-2xl rounded px-3 py-2 font-extrabold">
                     Hublast
                 </h1>
             </div>
 
             <button
-                className="md:hidden text-purple-600 text-3xl"
+                className="md:hidden text-violet-600 text-3xl"
                 onClick={() => setMenuOpen(!menuOpen)}
                 aria-label="Menu"
             >
@@ -67,21 +67,21 @@ export default function Header() {
                         key={index}
                         href={item.route}
                         onClick={(e) => handleClick(e, item.route)}
-                        className="hover:text-purple-500 transition-colors duration-200 font-medium"
+                        className="hover:text-violet-500 transition-colors duration-200 font-medium"
                     >
                         {item.text}
                     </Link>
                 ))}
             </nav>
 
-\            {menuOpen && (
+            {menuOpen && (
                 <div className="absolute top-20 right-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg flex flex-col gap-4 px-6 py-4 md:hidden border border-gray-200 dark:border-gray-700">
                     {listHeader.map((item, index) => (
                         <Link
                             key={index}
                             href={item.route}
                             onClick={(e) => handleClick(e, item.route)}
-                            className="text-gray-700 dark:text-gray-200 hover:text-purple-600 font-medium transition-colors duration-200"
+                            className="text-gray-700 dark:text-gray-200 hover:text-violet-600 font-medium transition-colors duration-200"
                         >
                             {item.text}
                         </Link>
