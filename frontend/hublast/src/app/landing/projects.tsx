@@ -54,7 +54,7 @@ export default function Projects() {
                         }}
                         className="relative bg-white dark:bg-gray-900 border-l-4 border-violet-500 shadow-md p-6 rounded-lg opacity-0 hover:shadow-xl transition-shadow duration-300"
                     >
-                        <h3 className="text-2xl font-bold text-violet-600 mb-2">
+                        <h3 className="text-2xl font-bold dark:text-violet-500 text-violet-600 mb-2">
                             {project.title}
                         </h3>
                         <p className="text-gray-600 dark:text-gray-300 mb-4">
@@ -64,7 +64,7 @@ export default function Projects() {
                             href={project.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center text-violet-600 hover:underline font-medium"
+                            className="inline-flex items-center dark:text-violet-500 text-violet-600 hover:underline font-medium"
                         >
                             Ver no GitHub{" "}
                             <FaExternalLinkAlt className="ml-2" size={14} />

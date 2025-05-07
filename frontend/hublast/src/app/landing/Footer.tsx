@@ -3,7 +3,7 @@ import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 export default function Footer() {
     return (
         <footer className="w-full px-6 py-10 text-center flex flex-col items-center">
-            <h3 className="text-lg font-semibold text-violet-600 dark:text-violet-400 mb-4">
+            <h3 className="text-lg font-semibold dark:text-violet-500 text-violet-600 mb-4">
                 Hublast
             </h3>
             <p className="text-sm mb-4">
