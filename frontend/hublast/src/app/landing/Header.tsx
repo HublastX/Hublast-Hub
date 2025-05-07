@@ -1,14 +1,20 @@
+"use client";
+import { useState } from "react";
 import Link from "next/link";
 import Logo from "../../assets/Logo";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { HiMenu, HiX } from "react-icons/hi";
 
 gsap.registerPlugin(ScrollToPlugin);
 
 export default function Header() {
+    const [menuOpen, setMenuOpen] = useState(false);
+
     const listHeader = [
         { text: "Início", route: "#start" },
         { text: "Sobre", route: "#about" },
+        { text: "Projetos", route: "#projects" },
     ];
 
     const handleClick = (
@@ -16,6 +22,8 @@ export default function Header() {
         route: string
     ) => {
         e.preventDefault();
+        setMenuOpen(false)
+
         const id = route.replace("#", "");
         const target = document.getElementById(id);
         if (target) {
@@ -45,7 +53,15 @@ export default function Header() {
                 </h1>
             </div>
 
-            <nav className="flex gap-6 px-3 py-2 rounded md:h-fit items-center">
+            <button
+                className="md:hidden text-purple-600 text-3xl"
+                onClick={() => setMenuOpen(!menuOpen)}
+                aria-label="Menu"
+            >
+                {menuOpen ? <HiX /> : <HiMenu />}
+            </button>
+
+            <nav className="hidden md:flex gap-6 px-3 py-2 rounded items-center">
                 {listHeader.map((item, index) => (
                     <Link
                         key={index}
@@ -57,6 +73,21 @@ export default function Header() {
                     </Link>
                 ))}
             </nav>
+
+\            {menuOpen && (
+                <div className="absolute top-20 right-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg flex flex-col gap-4 px-6 py-4 md:hidden border border-gray-200 dark:border-gray-700">
+                    {listHeader.map((item, index) => (
+                        <Link
+                            key={index}
+                            href={item.route}
+                            onClick={(e) => handleClick(e, item.route)}
+                            className="text-gray-700 dark:text-gray-200 hover:text-purple-600 font-medium transition-colors duration-200"
+                        >
+                            {item.text}
+                        </Link>
+                    ))}
+                </div>
+            )}
         </header>
     );
 }

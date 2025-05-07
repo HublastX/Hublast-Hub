@@ -48,7 +48,7 @@ export default function About() {
     }, []);
 
     return (
-        <section id="about" className="w-full min-h-screen z-0 px-6 py-20 dark:bg-gray-950 bg-neutral-50 text-center flex flex-col items-center scroll-smooth">
+        <section id="about" className="w-full z-0 px-6 py-20 dark:bg-gray-950 bg-neutral-50 text-center flex flex-col items-center scroll-smooth ">
             <h2 className="text-3xl md:text-4xl font-semibold mb-12 text-gray-900 dark:text-white">
                 Sobre a <span className="text-purple-600">Hublast</span>
             </h2>
@@ -65,7 +65,7 @@ export default function About() {
                         <div className="mb-6 flex justify-center items-center">
                             {card.icon}
                         </div>
-                        <h3 className="text-xl font-semibold mb-4 text-purple-600 dark:text-purple-400">
+                        <h3 className="text-xl font-semibold mb-4 text-purple-500">
                             {card.title}
                         </h3>
                         <p className="dark:text-gray-300 text-gray-600 text-sm">

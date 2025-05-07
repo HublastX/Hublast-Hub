@@ -1,8 +1,9 @@
 "use client";
 import Header from "./landing/Header";
 import About from "./landing/about";
-import { FaDiscord } from "react-icons/fa";
+import Projects from "./landing/projects";
 import Footer from "./landing/Footer";
+import { FaDiscord } from "react-icons/fa";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
@@ -60,7 +61,7 @@ export default function Landing() {
                         Sua <span className="text-purple-500">jornada dev</span>{" "}
                         <br />
                         começa com{" "}
-                        <span className="text-purple-600">apoio e prática</span>
+                        <span className="text-purple-500">apoio e prática</span>
                     </h1>
 
                     <p
@@ -76,13 +77,14 @@ export default function Landing() {
                         href="https://discord.gg/uXPXZdkqkf"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="opacity-0 z-0 inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300"
+                        className="opacity-0 z-0 inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200"
                     >
                         <FaDiscord size={20} />
                         Entrar na Comunidade
                     </a>
                 </section>
                 <About />
+                <Projects />
             </main>
             <Footer />
         </>
