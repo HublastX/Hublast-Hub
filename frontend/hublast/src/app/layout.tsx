@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "Hublast | Comunidade Dev",
+    title: "WENDELLAST | Comunidade Dev",
     description: "A comunidade que acredita no seu potencial",
 };
 
