@@ -59,14 +59,14 @@ func (s *AuthService) Register(
 	return user, nil
 }
 
-func (s *AuthService) Login(username, password string) (string, *models.User, error) {
-	user, err := s.userRepo.FindByUsername(username)
+func (s *AuthService) Login(email, password string) (string, *models.User, error) {
+	user, err := s.userRepo.FindByEmail(email)
 	if err != nil {
-		return "", nil, errors.New("invalid username or password")
+		return "", nil, errors.New("invalid email or password")
 	}
 
 	if !utils.CheckPasswordHash(password, user.Password) {
-		return "", nil, errors.New("invalid username or password")
+		return "", nil, errors.New("invalid email or password")
 	}
 
 	token, err := utils.GenerateJWT(*user)
