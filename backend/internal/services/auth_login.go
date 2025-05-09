@@ -18,7 +18,14 @@ func NewAuthService() *AuthService {
 	}
 }
 
-func (s *AuthService) Register(username, email, password string, role models.Role) (*models.User, error) {
+func (s *AuthService) Register(
+	username string,
+	email string,
+	password string,
+	level models.Level,
+	experience models.Experience,
+	employment models.Employment,
+) (*models.User, error) {
 
 	_, err := s.userRepo.FindByUsername(username)
 	if err == nil {
@@ -36,10 +43,12 @@ func (s *AuthService) Register(username, email, password string, role models.Rol
 	}
 
 	user := &models.User{
-		Username: username,
-		Email:    email,
-		Password: hashedPassword,
-		Role:     role,
+		Username:   username,
+		Email:      email,
+		Password:   hashedPassword,
+		Level:      level,
+		Experience: experience,
+		Employment: employment,
 	}
 
 	err = s.userRepo.Create(user)

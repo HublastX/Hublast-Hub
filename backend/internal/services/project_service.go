@@ -5,17 +5,21 @@ import (
 
 	"github.com/HublastX/HubLast-Hub/internal/models"
 	"github.com/HublastX/HubLast-Hub/internal/repository"
+	"github.com/HublastX/HubLast-Hub/pkg/database"
+	"gorm.io/gorm"
 )
 
 type ProjectService struct {
 	projectRepo *repository.ProjectRepository
 	userRepo    *repository.UserRepository
+	db          *gorm.DB
 }
 
 func NewProjectService() *ProjectService {
 	return &ProjectService{
 		projectRepo: repository.NewProjectRepository(),
 		userRepo:    repository.NewUserRepository(),
+		db:          database.GetDB(),
 	}
 }
 
@@ -108,4 +112,65 @@ func (s *ProjectService) SetProjectResponsible(projectID, userID uint) error {
 
 	project.ResponsibleUserID = userID
 	return s.projectRepo.Update(project)
+}
+
+func (s *ProjectService) AddFrontendTechToProject(projectID uint, techName string) error {
+	project, err := s.projectRepo.FindByID(projectID)
+	if err != nil {
+		return err
+	}
+
+	var tech models.Technology
+	result := s.db.Where("name = ? AND type = ?", techName, models.FrontendTech).First(&tech)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return s.db.Model(project).Association("Technologies").Append(&tech)
+}
+
+func (s *ProjectService) AddBackendTechToProject(projectID uint, techName string) error {
+	project, err := s.projectRepo.FindByID(projectID)
+	if err != nil {
+		return err
+	}
+
+	var tech models.Technology
+	result := s.db.Where("name = ? AND type = ?", techName, models.BackendTech).First(&tech)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return s.db.Model(project).Association("Technologies").Append(&tech)
+}
+
+func (s *ProjectService) GetFrontendTechsForProject(projectID uint) ([]models.Technology, error) {
+	project, err := s.projectRepo.FindByID(projectID)
+	if err != nil {
+		return nil, err
+	}
+
+	var techs []models.Technology
+	err = s.db.Model(project).Association("Technologies").Find(&techs, "type = ?", models.FrontendTech)
+	return techs, err
+}
+
+func (s *ProjectService) GetBackendTechsForProject(projectID uint) ([]models.Technology, error) {
+	project, err := s.projectRepo.FindByID(projectID)
+	if err != nil {
+		return nil, err
+	}
+
+	var techs []models.Technology
+	err = s.db.Model(project).Association("Technologies").Find(&techs, "type = ?", models.BackendTech)
+	return techs, err
+}
+
+func (s *ProjectService) ClearProjectTechnologies(projectID uint) error {
+	project, err := s.projectRepo.FindByID(projectID)
+	if err != nil {
+		return err
+	}
+
+	return s.db.Model(project).Association("Technologies").Clear()
 }
