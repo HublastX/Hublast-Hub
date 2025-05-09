@@ -7,7 +7,6 @@ type UserController struct {
 	userService *services.UserService
 }
 
-// NewUserController creates a new user controller
 func NewUserController() *UserController {
 	return &UserController{
 		authService: services.NewAuthService(),

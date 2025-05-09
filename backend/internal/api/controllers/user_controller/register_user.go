@@ -3,8 +3,7 @@ package usercontrollers
 import (
 	"net/http"
 
-	"github.com/HublastX/HubLast-Hub/internal/models"
-	"github.com/HublastX/HubLast-Hub/internal/schemas"
+	schemas "github.com/HublastX/HubLast-Hub/internal/schemas"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,7 +13,7 @@ import (
 // @Tags authentication
 // @Accept json
 // @Produce json
-// @Param user body RegisterRequest true "User registration data"
+// @Param user body schemas.RegisterRequest true "User registration data"
 // @Success 201 {object} map[string]interface{} "User created successfully"
 // @Failure 400 {object} map[string]string "Bad request"
 // @Router /auth/register [post]
@@ -25,7 +24,14 @@ func (c *UserController) Register(ctx *gin.Context) {
 		return
 	}
 
-	user, err := c.authService.Register(req.Username, req.Email, req.Password, models.UserRole)
+	user, err := c.authService.Register(
+		req.Username,
+		req.Email,
+		req.Password,
+		req.Level,
+		req.Experience,
+		req.Employment,
+	)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -34,10 +40,12 @@ func (c *UserController) Register(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, gin.H{
 		"message": "User registered successfully",
 		"user": gin.H{
-			"id":       user.ID,
-			"username": user.Username,
-			"email":    user.Email,
-			"role":     user.Role,
+			"id":         user.ID,
+			"username":   user.Username,
+			"email":      user.Email,
+			"level":      user.Level,
+			"experience": user.Experience,
+			"employment": user.Employment,
 		},
 	})
 }

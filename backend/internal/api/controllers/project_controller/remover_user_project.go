@@ -15,12 +15,12 @@ import (
 // @Accept json
 // @Produce json
 // @Param id path int true "Project ID"
-// @Param user body UserIDRequest true "User ID to remove"
+// @Param user body schemas.UserIDRequest true "User ID to add"
 // @Success 200 {object} map[string]string "User removed from project successfully"
 // @Failure 400 {object} map[string]string "Bad request"
 // @Failure 403 {object} map[string]string "Forbidden - admin only"
 // @Failure 500 {object} map[string]string "Internal server error"
-// @Security ApiKeyAuth
+// @Security BearerAuth
 // @Router /api/admin/projects/{id}/users [delete]
 func (c *ProjectController) RemoveUserFromProject(ctx *gin.Context) {
 	projectID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)

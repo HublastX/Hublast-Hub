@@ -8,16 +8,18 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
-	_ "github.com/HublastX/HubLast-Hub/docs"
 	projectcontrollers "github.com/HublastX/HubLast-Hub/internal/api/controllers/project_controller"
 	roadmapcontrollers "github.com/HublastX/HubLast-Hub/internal/api/controllers/roadmap_controller"
 	usercontrollers "github.com/HublastX/HubLast-Hub/internal/api/controllers/user_controller"
 	"github.com/HublastX/HubLast-Hub/internal/api/middleware"
+	"github.com/HublastX/HubLast-Hub/pkg/database"
+
+	"github.com/HublastX/HubLast-Hub/internal/services"
 )
 
 func SetupRoutes(router *gin.Engine) {
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
+		AllowOrigins:     []string{"http://localhost:5000"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -25,7 +27,10 @@ func SetupRoutes(router *gin.Engine) {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	projectController := projectcontrollers.NewProjectController()
+	projectService := services.NewProjectService()
+	db := database.DB
+
+	projectController := projectcontrollers.NewProjectController(*projectService, db)
 	roadmapController := roadmapcontrollers.NewRoadmapController()
 	userController := usercontrollers.NewUserController()
 

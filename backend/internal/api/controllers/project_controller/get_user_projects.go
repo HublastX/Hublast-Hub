@@ -15,7 +15,7 @@ import (
 // @Success 200 {object} map[string]interface{} "Returns list of user's projects"
 // @Failure 401 {object} map[string]string "Unauthorized"
 // @Failure 500 {object} map[string]string "Internal server error"
-// @Security ApiKeyAuth
+// @Security BearerAuth
 // @Router /api/user/projects [get]
 func (c *ProjectController) GetUserProjects(ctx *gin.Context) {
 	userID, exists := ctx.Get("userID")

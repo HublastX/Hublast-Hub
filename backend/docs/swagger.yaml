@@ -1,6 +1,48 @@
 basePath: /api
 definitions:
-  controllers.ChangePasswordRequest:
+  models.DifficultyLevel:
+    enum:
+    - beginner
+    - intermediate
+    - advanced
+    type: string
+    x-enum-varnames:
+    - Beginner
+    - Intermediate
+    - Advanced
+  models.Employment:
+    enum:
+    - frontend
+    - backend
+    - fullstack
+    - mobile
+    type: string
+    x-enum-varnames:
+    - EmploymentFrontend
+    - EmploymentBackend
+    - EmploymentFullstack
+    - EmploymentMobile
+  models.Experience:
+    enum:
+    - basic
+    - intermediate
+    - advanced
+    type: string
+    x-enum-varnames:
+    - BasicLevel
+    - IntermediateLevel
+    - AdvancedLevel
+  models.Level:
+    enum:
+    - junior
+    - pleno
+    - senior
+    type: string
+    x-enum-varnames:
+    - JuniorLevel
+    - PlenoLevel
+    - SeniorLevel
+  schemas.ChangePasswordRequest:
     properties:
       current_password:
         example: password123
@@ -13,32 +55,39 @@ definitions:
     - current_password
     - new_password
     type: object
-  controllers.CreateProjectRequest:
+  schemas.CreateProjectRequest:
     properties:
-      backend_tech:
-        type: string
+      backend_techs:
+        items:
+          type: string
+        type: array
       delivery_date:
         type: string
       description:
         type: string
       estimated_time:
         type: integer
-      frontend_tech:
+      frontend_techs:
+        items:
+          type: string
+        type: array
+      level:
         type: string
+      quanty_max_users:
+        type: integer
       title:
         type: string
     required:
-    - backend_tech
     - delivery_date
     - description
     - estimated_time
-    - frontend_tech
+    - quanty_max_users
     - title
     type: object
-  controllers.CreateRoadmapRequest:
+  schemas.CreateRoadmapRequest:
     properties:
       area:
-        $ref: '#/definitions/models.RoadmapArea'
+        type: string
       content:
         type: string
       course_links:
@@ -53,7 +102,7 @@ definitions:
     - difficulty
     - title
     type: object
-  controllers.LoginRequest:
+  schemas.LoginRequest:
     properties:
       password:
         example: password123
@@ -65,11 +114,23 @@ definitions:
     - password
     - username
     type: object
-  controllers.RegisterRequest:
+  schemas.RegisterRequest:
     properties:
       email:
         example: john@example.com
         type: string
+      employment:
+        allOf:
+        - $ref: '#/definitions/models.Employment'
+        example: backend
+      experience:
+        allOf:
+        - $ref: '#/definitions/models.Experience'
+        example: basic
+      level:
+        allOf:
+        - $ref: '#/definitions/models.Level'
+        example: junior
       password:
         example: password123
         minLength: 6
@@ -79,35 +140,20 @@ definitions:
         type: string
     required:
     - email
+    - employment
+    - experience
+    - level
     - password
     - username
     type: object
-  controllers.UserIDRequest:
+  schemas.UserIDRequest:
     properties:
       user_id:
         type: integer
     required:
     - user_id
     type: object
-  models.DifficultyLevel:
-    enum:
-    - beginner
-    - intermediate
-    - advanced
-    type: string
-    x-enum-varnames:
-    - Beginner
-    - Intermediate
-    - Advanced
-  models.RoadmapArea:
-    enum:
-    - frontend
-    - backend
-    type: string
-    x-enum-varnames:
-    - Frontend
-    - Backend
-host: localhost:3005
+host: localhost:5000
 info:
   contact:
     email: support@hublast.com
@@ -119,6 +165,194 @@ info:
   title: HubLast-Hub API
   version: "1.0"
 paths:
+  /admin/projects/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a project by its ID (admin only)
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Project deleted successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden - admin only
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete a project
+      tags:
+      - projects
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing project with the provided details
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated project details
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.CreateProjectRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns message and updated project
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden - admin only
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Project not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update a project
+      tags:
+      - projects
+  /admin/projects/{id}/approve:
+    post:
+      consumes:
+      - application/json
+      description: Approves a pending project (admin only)
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Project approved successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden - admin only
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Approve a project
+      tags:
+      - projects
+  /admin/projects/{id}/users:
+    post:
+      consumes:
+      - application/json
+      description: Adds a user to a specific project (admin only)
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User ID to add
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.UserIDRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User added to project successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden - admin only
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Add user to project
+      tags:
+      - projects
   /admin/roadmaps:
     post:
       consumes:
@@ -130,7 +364,7 @@ paths:
         name: roadmap
         required: true
         schema:
-          $ref: '#/definitions/controllers.CreateRoadmapRequest'
+          $ref: '#/definitions/schemas.CreateRoadmapRequest'
       produces:
       - application/json
       responses:
@@ -215,12 +449,12 @@ paths:
         name: id
         required: true
         type: integer
-      - description: Updated roadmap information
+      - description: Roadmap information
         in: body
         name: roadmap
         required: true
         schema:
-          $ref: '#/definitions/controllers.CreateRoadmapRequest'
+          $ref: '#/definitions/schemas.CreateRoadmapRequest'
       produces:
       - application/json
       responses:
@@ -332,145 +566,6 @@ paths:
       summary: Promote user to admin
       tags:
       - admin
-  /api/admin/projects/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Deletes a project by its ID (admin only)
-      parameters:
-      - description: Project ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Project deleted successfully
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: Bad request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: Forbidden - admin only
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal server error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - ApiKeyAuth: []
-      summary: Delete a project
-      tags:
-      - projects
-    put:
-      consumes:
-      - application/json
-      description: Updates an existing project with the provided details
-      parameters:
-      - description: Project ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Updated project details
-        in: body
-        name: project
-        required: true
-        schema:
-          $ref: '#/definitions/controllers.CreateProjectRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Returns message and updated project
-          schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: Bad request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: Forbidden - admin only
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "404":
-          description: Project not found
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal server error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - ApiKeyAuth: []
-      summary: Update a project
-      tags:
-      - projects
-  /api/admin/projects/{id}/approve:
-    post:
-      consumes:
-      - application/json
-      description: Approves a pending project (admin only)
-      parameters:
-      - description: Project ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Project approved successfully
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: Bad request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: Forbidden - admin only
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal server error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - ApiKeyAuth: []
-      summary: Approve a project
-      tags:
-      - projects
   /api/admin/projects/{id}/reject:
     post:
       consumes:
@@ -510,7 +605,7 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
+      - BearerAuth: []
       summary: Reject a project
       tags:
       - projects
@@ -530,7 +625,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/controllers.UserIDRequest'
+          $ref: '#/definitions/schemas.UserIDRequest'
       produces:
       - application/json
       responses:
@@ -559,7 +654,7 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
+      - BearerAuth: []
       summary: Set project responsible
       tags:
       - projects
@@ -574,12 +669,12 @@ paths:
         name: id
         required: true
         type: integer
-      - description: User ID to remove
+      - description: User ID to add
         in: body
         name: user
         required: true
         schema:
-          $ref: '#/definitions/controllers.UserIDRequest'
+          $ref: '#/definitions/schemas.UserIDRequest'
       produces:
       - application/json
       responses:
@@ -608,163 +703,8 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
+      - BearerAuth: []
       summary: Remove user from project
-      tags:
-      - projects
-    post:
-      consumes:
-      - application/json
-      description: Adds a user to a specific project (admin only)
-      parameters:
-      - description: Project ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: User ID to add
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/controllers.UserIDRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: User added to project successfully
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: Bad request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "403":
-          description: Forbidden - admin only
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal server error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - ApiKeyAuth: []
-      summary: Add user to project
-      tags:
-      - projects
-  /api/projects:
-    get:
-      consumes:
-      - application/json
-      description: Retrieves all projects, optionally filtered by status
-      parameters:
-      - description: Filter projects by status
-        in: query
-        name: status
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Returns list of projects
-          schema:
-            additionalProperties: true
-            type: object
-        "500":
-          description: Internal server error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - ApiKeyAuth: []
-      summary: Get all projects
-      tags:
-      - projects
-    post:
-      consumes:
-      - application/json
-      description: Creates a new project with the provided details
-      parameters:
-      - description: Project details
-        in: body
-        name: project
-        required: true
-        schema:
-          $ref: '#/definitions/controllers.CreateProjectRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Returns message and created project
-          schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: Bad request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: Unauthorized
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal server error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - ApiKeyAuth: []
-      summary: Create a new project
-      tags:
-      - projects
-  /api/projects/{id}:
-    get:
-      consumes:
-      - application/json
-      description: Retrieves a project by its ID
-      parameters:
-      - description: Project ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Returns project details
-          schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: Bad request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "404":
-          description: Project not found
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - ApiKeyAuth: []
-      summary: Get a specific project
       tags:
       - projects
   /api/projects/{id}/join:
@@ -806,7 +746,7 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
+      - BearerAuth: []
       summary: Request to join a project
       tags:
       - projects
@@ -814,7 +754,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Retrieves all users associated with a specific project
+      description: Retrieves users of a project by project ID
       parameters:
       - description: Project ID
         in: path
@@ -825,7 +765,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: Returns project details with users
+          description: Returns project users
           schema:
             additionalProperties: true
             type: object
@@ -842,8 +782,8 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
-      summary: Get users in a project
+      - BearerAuth: []
+      summary: Get users of a specific project
       tags:
       - projects
   /api/user/projects:
@@ -872,7 +812,7 @@ paths:
               type: string
             type: object
       security:
-      - ApiKeyAuth: []
+      - BearerAuth: []
       summary: Get current user's projects
       tags:
       - projects
@@ -887,7 +827,7 @@ paths:
         name: credentials
         required: true
         schema:
-          $ref: '#/definitions/controllers.LoginRequest'
+          $ref: '#/definitions/schemas.LoginRequest'
       produces:
       - application/json
       responses:
@@ -922,7 +862,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/controllers.RegisterRequest'
+          $ref: '#/definitions/schemas.RegisterRequest'
       produces:
       - application/json
       responses:
@@ -940,6 +880,113 @@ paths:
       summary: Register a new user
       tags:
       - authentication
+  /projects:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all projects, optionally filtered by status
+      parameters:
+      - description: Filter projects by status
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns list of projects
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get all projects
+      tags:
+      - projects
+    post:
+      consumes:
+      - application/json
+      description: Creates a new project with the provided details
+      parameters:
+      - description: Project details
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.CreateProjectRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Returns message and created project
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create a new project
+      tags:
+      - projects
+  /projects/{id}/users:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves users of a project by project ID
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns project users information
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Project not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get users of a specific project
+      tags:
+      - projects
   /roadmaps:
     get:
       consumes:
@@ -1112,7 +1159,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/controllers.ChangePasswordRequest'
+          $ref: '#/definitions/schemas.ChangePasswordRequest'
       produces:
       - application/json
       responses:

@@ -19,8 +19,8 @@ import (
 // @Failure 400 {object} map[string]string "Bad request"
 // @Failure 403 {object} map[string]string "Forbidden - admin only"
 // @Failure 500 {object} map[string]string "Internal server error"
-// @Security ApiKeyAuth
-// @Router /api/admin/projects/{id} [delete]
+// @Security BearerAuth
+// @Router /admin/projects/{id} [delete]
 func (c *ProjectController) DeleteProject(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {

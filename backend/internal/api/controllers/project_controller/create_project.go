@@ -14,13 +14,13 @@ import (
 // @Tags projects
 // @Accept json
 // @Produce json
-// @Param project body CreateProjectRequest true "Project details"
+// @Param project body schemas.CreateProjectRequest true "Project details"
 // @Success 201 {object} map[string]interface{} "Returns message and created project"
 // @Failure 400 {object} map[string]string "Bad request"
 // @Failure 401 {object} map[string]string "Unauthorized"
 // @Failure 500 {object} map[string]string "Internal server error"
-// @Security ApiKeyAuth
-// @Router /api/projects [post]
+// @Security BearerAuth
+// @Router /projects [post]
 func (c *ProjectController) CreateProject(ctx *gin.Context) {
 	var req schemas.CreateProjectRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -43,19 +43,34 @@ func (c *ProjectController) CreateProject(ctx *gin.Context) {
 	isAdmin := role == models.AdminRole
 
 	project := &models.Project{
-		Title:         req.Title,
-		Description:   req.Description,
-		FrontendTech:  req.FrontendTech,
-		BackendTech:   req.BackendTech,
-		EstimatedTime: req.EstimatedTime,
-		DeliveryDate:  req.DeliveryDate,
+		Title:             req.Title,
+		Description:       req.Description,
+		EstimatedTime:     req.EstimatedTime,
+		DeliveryDate:      req.DeliveryDate,
+		ResponsibleUserID: userID.(uint),
+		QuantyMaxUsers:    req.QuantyMaxUsers,
+		Level:             models.ProjectLevel(req.Level),
+		Status:            models.Pending,
 	}
 
 	err := c.projectService.CreateProject(project, userID.(uint), isAdmin)
-
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
+	}
+
+	for _, techName := range req.FrontendTechs {
+		if err := c.projectService.AddFrontendTechToProject(project.ID, techName); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add frontend technology: " + err.Error()})
+			return
+		}
+	}
+
+	for _, techName := range req.BackendTechs {
+		if err := c.projectService.AddBackendTechToProject(project.ID, techName); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add backend technology: " + err.Error()})
+			return
+		}
 	}
 
 	ctx.JSON(http.StatusCreated, gin.H{

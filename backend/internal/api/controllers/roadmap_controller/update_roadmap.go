@@ -16,7 +16,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param id path int true "Roadmap ID"
-// @Param roadmap body CreateRoadmapRequest true "Updated roadmap information"
+// @Param roadmap body schemas.CreateRoadmapRequest true "Roadmap information"
 // @Success 200 {object} map[string]interface{} "Roadmap updated successfully"
 // @Failure 400 {object} map[string]string "Bad request"
 // @Failure 403 {object} map[string]string "Forbidden - Admin only"

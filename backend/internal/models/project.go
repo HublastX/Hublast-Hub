@@ -6,24 +6,23 @@ import (
 	"gorm.io/gorm"
 )
 
-type ProjectStatus string
+var (
+	FrontendTechs = []string{"React", "Angular", "Vue", "Next.js", "Svelte", "HTML/CSS", "Bootstrap", "Tailwind"}
 
-const (
-	Pending  ProjectStatus = "pending"
-	Approved ProjectStatus = "approved"
-	Rejected ProjectStatus = "rejected"
+	BackendTechs = []string{"Go", "Python", "Node.js", "Java", "C#", "PHP", "Ruby", "Django", "Express", "Spring", "Laravel"}
 )
 
 type Project struct {
 	gorm.Model
 	Title             string        `gorm:"not null"`
 	Description       string        `gorm:"not null"`
-	FrontendTech      string        `gorm:"not null"`
-	BackendTech       string        `gorm:"not null"`
-	EstimatedTime     int           `gorm:"not null"` // In days
+	Technologies      []Technology  `gorm:"many2many:project_technologies;"`
+	EstimatedTime     int           `gorm:"not null"`
 	DeliveryDate      time.Time     `gorm:"not null"`
 	Status            ProjectStatus `gorm:"type:varchar(20);default:'pending'"`
 	ResponsibleUserID uint
-	ResponsibleUser   User   `gorm:"foreignKey:ResponsibleUserID"`
-	Users             []User `gorm:"many2many:user_projects;"`
+	ResponsibleUser   User         `gorm:"foreignKey:ResponsibleUserID"`
+	Users             []User       `gorm:"many2many:user_projects;"`
+	QuantyMaxUsers    int          `gorm:"not null"`
+	Level             ProjectLevel `gorm:"type:varchar(10);default:'low'"`
 }

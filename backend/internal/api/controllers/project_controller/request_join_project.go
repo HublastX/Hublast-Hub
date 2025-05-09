@@ -18,7 +18,7 @@ import (
 // @Failure 400 {object} map[string]string "Bad request"
 // @Failure 401 {object} map[string]string "Unauthorized"
 // @Failure 500 {object} map[string]string "Internal server error"
-// @Security ApiKeyAuth
+// @Security BearerAuth
 // @Router /api/projects/{id}/join [post]
 func (c *ProjectController) RequestJoinProject(ctx *gin.Context) {
 	projectID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)

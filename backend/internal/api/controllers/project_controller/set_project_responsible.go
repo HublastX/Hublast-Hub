@@ -15,12 +15,12 @@ import (
 // @Accept json
 // @Produce json
 // @Param id path int true "Project ID"
-// @Param user body UserIDRequest true "User ID to set as responsible"
+// @Param user body schemas.UserIDRequest true "User ID to set as responsible"
 // @Success 200 {object} map[string]string "Project responsible set successfully"
 // @Failure 400 {object} map[string]string "Bad request"
 // @Failure 403 {object} map[string]string "Forbidden - admin only"
 // @Failure 500 {object} map[string]string "Internal server error"
-// @Security ApiKeyAuth
+// @Security BearerAuth
 // @Router /api/admin/projects/{id}/responsible [post]
 func (c *ProjectController) SetProjectResponsible(ctx *gin.Context) {
 	projectID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)

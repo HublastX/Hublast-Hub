@@ -8,17 +8,17 @@ import (
 )
 
 // GetProjectUsers godoc
-// @Summary Get users in a project
-// @Description Retrieves all users associated with a specific project
+// @Summary Get users of a specific project
+// @Description Retrieves users of a project by project ID
 // @Tags projects
 // @Accept json
 // @Produce json
 // @Param id path int true "Project ID"
-// @Success 200 {object} map[string]interface{} "Returns project details with users"
+// @Success 200 {object} map[string]interface{} "Returns project users information"
 // @Failure 400 {object} map[string]string "Bad request"
 // @Failure 404 {object} map[string]string "Project not found"
-// @Security ApiKeyAuth
-// @Router /api/projects/{id}/users [get]
+// @Security BearerAuth
+// @Router /projects/{id}/users [get]
 func (c *ProjectController) GetProjectUsers(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
