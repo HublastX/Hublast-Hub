@@ -14,29 +14,24 @@ export default function Landing() {
     const buttonRef = useRef(null);
 
     useEffect(() => {
-        const tl = gsap.timeline({
-            defaults: { ease: "power3.out", duration: 1 },
-        });
+        const elements = [
+            subtitleRef.current,
+            titleRef.current,
+            subtitleDescRef.current,
+            buttonRef.current,
+        ];
 
-        tl.fromTo(titleRef.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0 })
-            .fromTo(
-                subtitleRef.current,
-                { opacity: 0, y: 50 },
-                { opacity: 1, y: 0 },
-                "-=0.8"
-            )
-            .fromTo(
-                subtitleDescRef.current,
-                { opacity: 0, y: 50 },
-                { opacity: 1, y: 0 },
-                "-=9"
-            )
-            .fromTo(
-                buttonRef.current,
-                { opacity: 0, y: 50 },
-                { opacity: 1, y: 0 },
-                "-=0.9"
-            );
+        gsap.fromTo(
+            elements,
+            { opacity: 0, y: 50 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: "power3.out",
+                stagger: 0.2,
+            }
+        );
     }, []);
 
     return (
@@ -81,6 +76,7 @@ export default function Landing() {
                         ref={buttonRef}
                         href="https://discord.gg/uXPXZdkqkf"
                         target="_blank"
+                        aria-label="Entrar na Comunidade no Discord"
                         rel="noopener noreferrer"
                         className="opacity-0 z-0 inline-flex items-center gap-2 bg-indigo-500 hover:bg-violet-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200"
                     >
