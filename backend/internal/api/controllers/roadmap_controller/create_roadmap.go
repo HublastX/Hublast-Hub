@@ -14,7 +14,7 @@ import (
 // @Tags roadmaps
 // @Accept json
 // @Produce json
-// @Param roadmap body CreateRoadmapRequest true "Roadmap information"
+// @Param roadmap body schemas.CreateRoadmapRequest true "Roadmap information"
 // @Success 201 {object} map[string]interface{} "Roadmap created successfully"
 // @Failure 400 {object} map[string]string "Bad request"
 // @Failure 403 {object} map[string]string "Forbidden - Admin only"
