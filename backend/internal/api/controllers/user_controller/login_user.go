@@ -3,7 +3,7 @@ package usercontrollers
 import (
 	"net/http"
 
-	"github.com/HublastX/HubLast-Hub/internal/schemas"
+	schemas "github.com/HublastX/HubLast-Hub/internal/schemas"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,7 +13,7 @@ import (
 // @Tags authentication
 // @Accept json
 // @Produce json
-// @Param credentials body LoginRequest true "Login credentials"
+// @Param credentials body schemas.LoginRequest true "Login credentials"
 // @Success 200 {object} map[string]interface{} "Login successful with token"
 // @Failure 400 {object} map[string]string "Bad request"
 // @Failure 401 {object} map[string]string "Unauthorized"

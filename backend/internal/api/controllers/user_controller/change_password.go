@@ -3,7 +3,7 @@ package usercontrollers
 import (
 	"net/http"
 
-	"github.com/HublastX/HubLast-Hub/internal/schemas"
+	schemas "github.com/HublastX/HubLast-Hub/internal/schemas"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,7 +13,7 @@ import (
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param data body ChangePasswordRequest true "Password change data"
+// @Param data body schemas.ChangePasswordRequest true "Password change data"
 // @Success 200 {object} map[string]string "Password changed successfully"
 // @Failure 400 {object} map[string]string "Bad request"
 // @Failure 401 {object} map[string]string "Unauthorized"
