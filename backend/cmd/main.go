@@ -18,9 +18,9 @@ import (
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      localhost:3005
+// @host      localhost:5000
 // @BasePath  /api
-
+//
 // @securityDefinitions.apikey BearerAuth
 // @in header
 // @name Authorization
@@ -31,5 +31,7 @@ func main() {
 
 	routes.SetupRoutes(router)
 
-	router.Run(":3005")
+	database.SeedTechnologies(database.DB)
+
+	router.Run(":5000")
 }
