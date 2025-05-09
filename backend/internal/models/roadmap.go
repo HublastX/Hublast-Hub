@@ -6,7 +6,7 @@ import (
 
 type RoadmapArea string
 
-const (
+var (
 	Frontend RoadmapArea = "frontend"
 	Backend  RoadmapArea = "backend"
 )
