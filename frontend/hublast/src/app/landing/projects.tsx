@@ -32,7 +32,7 @@ export default function Projects() {
     ];
 
     useEffect(() => {
-        gsap.fromTo(
+        const animation = gsap.fromTo(
             projectsRef.current,
             { opacity: 0, x: -50 },
             {
@@ -47,7 +47,14 @@ export default function Projects() {
                 },
             }
         );
+
+        return () => {
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+            animation.kill();
+        };
     }, []);
+
+    projectsRef.current = [];
 
     return (
         <section
@@ -55,13 +62,13 @@ export default function Projects() {
             className="w-full px-6 py-20 bg-gradient-to-b from-neutral-50 dark:from-gray-950 to-transparent text-left flex flex-col items-center scroll-smooth"
         >
             <h2 className="text-3xl md:text-4xl font-semibold mb-16 text-gray-900 dark:text-white text-center">
-                Ultimos{" "}
+                Últimos{" "}
                 <span className="dark:text-violet-500 text-violet-600">
                     Projetos
                 </span>
             </h2>
 
-            <div className="flex flex-col gap-10 max-w-4xl w-full grid-cols-2">
+            <div className="flex flex-col gap-10 max-w-4xl w-full">
                 {projects.map((project, index) => (
                     <div
                         key={index}
@@ -76,15 +83,14 @@ export default function Projects() {
                         <p className="text-gray-600 dark:text-gray-300 mb-4">
                             {project.description}
                         </p>
-                        <div className="flex row gap-6 w-full">
+                        <div className="flex flex-wrap gap-6 w-full">
                             <a
                                 href={project.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center dark:text-violet-500 text-violet-600 hover:underline font-medium"
                             >
-                                <FaGithub className="mr-2" size={20} /> Ver no
-                                GitHub
+                                <FaGithub className="mr-2" size={20} /> Ver no GitHub
                             </a>
                             {project.depoly && (
                                 <a
@@ -93,17 +99,14 @@ export default function Projects() {
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center dark:text-violet-500 text-violet-600 hover:underline font-medium"
                                 >
-                                    Visitar o site{" "}
-                                    <FaExternalLinkAlt
-                                        className="ml-2"
-                                        size={14}
-                                    />
+                                    Visitar o site <FaExternalLinkAlt className="ml-2" size={14} />
                                 </a>
                             )}
                         </div>
                     </div>
                 ))}
             </div>
+
             <a
                 href="/landing"
                 className="mt-12 text-violet-600 dark:text-violet-500 hover:underline font-medium text-lg"
