@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { FaExternalLinkAlt } from "react-icons/fa";
+import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,6 +15,18 @@ export default function Projects() {
             description:
                 "Commit-IA é uma ferramenta de linha de comando criada em Go que utiliza Large Language Models (LLMs) para analisar suas alterações no código Git e gerar automaticamente mensagens de confirmação semântica.",
             link: "https://github.com/HublastX/Commit-IA",
+        },
+        {
+            title: "Book-Guardian",
+            description:
+                "Projeto BookGuardian criado com a função de gerencia livros , que visa auxiliar os amantes da leitura a gerenciar suas bibliotecas pessoais de maneira eficiente e organizada.",
+            link: "https://github.com/HublastX/Book-Guardian",
+            depoly: "https://book-guardian-production.up.railway.app/",
+        },
+        {
+            title: "Validgen",
+            description: "Valigen é uma biblioteca Go para gerar e validar diversos tipos de dados estruturados, como CPF, CNPJ e outros identificadores formatados. Ela fornece uma API eficiente e fácil de usar para lidar com validação, formatação e geração de dados.",
+            link: "https://github.com/HublastX/ValidGen",
         },
     ];
 
@@ -60,15 +72,31 @@ export default function Projects() {
                         <p className="text-gray-600 dark:text-gray-300 mb-4">
                             {project.description}
                         </p>
-                        <a
-                            href={project.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center dark:text-violet-500 text-violet-600 hover:underline font-medium"
-                        >
-                            Ver no GitHub{" "}
-                            <FaExternalLinkAlt className="ml-2" size={14} />
-                        </a>
+                        <div className="flex row gap-6 w-full">
+                            <a
+                                href={project.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center dark:text-violet-500 text-violet-600 hover:underline font-medium"
+                            >
+                                <FaGithub className="mr-2" size={20} /> Ver no
+                                GitHub
+                            </a>
+                            {project.depoly && (
+                                <a
+                                    href={project.depoly}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center dark:text-violet-500 text-violet-600 hover:underline font-medium"
+                                >
+                                    Visitar o site{" "}
+                                    <FaExternalLinkAlt
+                                        className="ml-2"
+                                        size={14}
+                                    />
+                                </a>
+                            )}
+                        </div>
                     </div>
                 ))}
             </div>
