@@ -25,7 +25,8 @@ export default function Projects() {
         },
         {
             title: "Validgen",
-            description: "Valigen é uma biblioteca Go para gerar e validar diversos tipos de dados estruturados, como CPF, CNPJ e outros identificadores formatados. Ela fornece uma API eficiente e fácil de usar para lidar com validação, formatação e geração de dados.",
+            description:
+                "Valigen é uma biblioteca Go para gerar e validar diversos tipos de dados estruturados, como CPF, CNPJ e outros identificadores formatados. Ela fornece uma API eficiente e fácil de usar para lidar com validação, formatação e geração de dados.",
             link: "https://github.com/HublastX/ValidGen",
         },
     ];
@@ -54,7 +55,10 @@ export default function Projects() {
             className="w-full px-6 py-20 bg-gradient-to-b from-neutral-50 dark:from-gray-950 to-transparent text-left flex flex-col items-center scroll-smooth"
         >
             <h2 className="text-3xl md:text-4xl font-semibold mb-16 text-gray-900 dark:text-white text-center">
-                Projetos
+                Ultimos{" "}
+                <span className="dark:text-violet-500 text-violet-600">
+                    Projetos
+                </span>
             </h2>
 
             <div className="flex flex-col gap-10 max-w-4xl w-full grid-cols-2">
@@ -100,6 +104,12 @@ export default function Projects() {
                     </div>
                 ))}
             </div>
+            <a
+                href="/landing"
+                className="mt-12 text-violet-600 dark:text-violet-500 hover:underline font-medium text-lg"
+            >
+                Veja todos os nossos projetos
+            </a>
         </section>
     );
 }
