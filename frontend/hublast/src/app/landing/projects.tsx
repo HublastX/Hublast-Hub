@@ -63,7 +63,7 @@ export default function Projects() {
         >
             <h2 className="text-3xl md:text-4xl font-semibold mb-16 text-gray-900 dark:text-white text-center">
                 Últimos{" "}
-                <span className="dark:text-violet-500 text-violet-600">
+                <span className="bg-gradient-to-r from-violet-500 to-indigo-500 bg-clip-text text-transparent font-bold">
                     Projetos
                 </span>
             </h2>
