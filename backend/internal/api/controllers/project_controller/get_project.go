@@ -7,18 +7,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GetProject godoc
-// @Summary Get a specific project
-// @Description Retrieves a project by its ID
+// GetProjectUsers godoc
+// @Summary Get users of a specific project
+// @Description Retrieves users of a project by project ID
 // @Tags projects
 // @Accept json
 // @Produce json
 // @Param id path int true "Project ID"
-// @Success 200 {object} map[string]interface{} "Returns project details"
+// @Success 200 {object} map[string]interface{} "Returns project users"
 // @Failure 400 {object} map[string]string "Bad request"
 // @Failure 404 {object} map[string]string "Project not found"
-// @Security ApiKeyAuth
-// @Router /api/projects/{id} [get]
+// @Security BearerAuth
+// @Router /api/projects/{id}/users [get]
 func (c *ProjectController) GetProject(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {

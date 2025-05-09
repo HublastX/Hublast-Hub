@@ -19,7 +19,7 @@ import (
 // @Failure 400 {object} map[string]string "Bad request"
 // @Failure 403 {object} map[string]string "Forbidden - admin only"
 // @Failure 500 {object} map[string]string "Internal server error"
-// @Security ApiKeyAuth
+// @Security BearerAuth
 // @Router /api/admin/projects/{id}/reject [post]
 func (c *ProjectController) RejectProject(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 32)

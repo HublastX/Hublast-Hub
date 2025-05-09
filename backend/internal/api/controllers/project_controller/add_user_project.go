@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/HublastX/HubLast-Hub/internal/models"
+	"github.com/HublastX/HubLast-Hub/internal/schemas"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,13 +16,13 @@ import (
 // @Accept json
 // @Produce json
 // @Param id path int true "Project ID"
-// @Param user body UserIDRequest true "User ID to add"
+// @Param user body schemas.UserIDRequest true "User ID to add"
 // @Success 200 {object} map[string]string "User added to project successfully"
 // @Failure 400 {object} map[string]string "Bad request"
 // @Failure 403 {object} map[string]string "Forbidden - admin only"
 // @Failure 500 {object} map[string]string "Internal server error"
-// @Security ApiKeyAuth
-// @Router /api/admin/projects/{id}/users [post]
+// @Security BearerAuth
+// @Router /admin/projects/{id}/users [post]
 func (c *ProjectController) AddUserToProject(ctx *gin.Context) {
 	projectID, err := strconv.ParseUint(ctx.Param("id"), 10, 32)
 	if err != nil {
@@ -29,9 +30,7 @@ func (c *ProjectController) AddUserToProject(ctx *gin.Context) {
 		return
 	}
 
-	var req struct {
-		UserID uint `json:"user_id" binding:"required"`
-	}
+	var req schemas.UserIDRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
