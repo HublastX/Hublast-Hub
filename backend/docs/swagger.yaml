@@ -104,15 +104,15 @@ definitions:
     type: object
   schemas.LoginRequest:
     properties:
+      email:
+        example: john@example.com
+        type: string
       password:
         example: password123
         type: string
-      username:
-        example: johndoe
-        type: string
     required:
+    - email
     - password
-    - username
     type: object
   schemas.RegisterRequest:
     properties:
@@ -820,7 +820,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Login with username and password
+      description: Login with email and password
       parameters:
       - description: Login credentials
         in: body

@@ -1035,7 +1035,7 @@ const docTemplate = `{
         },
         "/auth/login": {
             "post": {
-                "description": "Login with username and password",
+                "description": "Login with email and password",
                 "consumes": [
                     "application/json"
                 ],
@@ -1754,17 +1754,17 @@ const docTemplate = `{
         "schemas.LoginRequest": {
             "type": "object",
             "required": [
-                "password",
-                "username"
+                "email",
+                "password"
             ],
             "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "john@example.com"
+                },
                 "password": {
                     "type": "string",
                     "example": "password123"
-                },
-                "username": {
-                    "type": "string",
-                    "example": "johndoe"
                 }
             }
         },
